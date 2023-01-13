@@ -5,11 +5,12 @@ const port = 9000;
 
 let count = 0;
 
+setInterval(() => {
+  count = count + 1;
+  console.log(count)
+}, 1000)
 
 app.use("/", (req, res) => {
-  setInterval(() => {
-    count = count + 1;
-  }, 1000)
   res.json({ message: "Hello From Express App", count: count });
 });
 
