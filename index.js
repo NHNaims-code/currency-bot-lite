@@ -10,7 +10,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello From Express App"});
 });
 
-
 app.get("/currencies", async(req, res) => {
   
 
@@ -28,7 +27,7 @@ app.get("/currencies", async(req, res) => {
       const conversion_graph = $2('div.NN5r3b > span').attr('aria-label')
       console.log(conversion_name, ' ', conversion_rate, ' ',conversion_graph)
 
-      dataSet.push(conversion_name, conversion_rate, conversion_graph)
+      dataSet.push({conversion_name, conversion_rate, conversion_graph})
     })
     
     res.json({ is_success: true, data: dataSet });
