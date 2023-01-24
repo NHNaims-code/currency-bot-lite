@@ -38,6 +38,44 @@ app.get("/currencies", async(req, res) => {
 
 });
 
+app.get("/currency-rate", async(req, res) => {
+  
+
+  try {
+
+    console.log(req.query)
+
+    const currencyA = req.query.from;
+    const currencyB = req.query.to;
+    const response = await axios.get(`https://www.google.com/finance/quote/${currencyA}-${currencyB}`)
+
+    const $ = cheerio.load(response.data)
+    const today_rate = $('.fxKbKc').text()
+    const yesterday_rate = $('.P6K39c').text()
+    
+    console.log(parseFloat(today_rate))
+    console.log(parseFloat(yesterday_rate))
+    console.log(parseFloat(today_rate) - parseFloat(yesterday_rate))
+
+    res.json({ is_success: true, data: {
+      a: {
+        today_rate,
+        yesterday_rate,
+        today: (parseFloat(today_rate) - parseFloat(yesterday_rate)).toFixed(2).toString()
+      },
+      b: {
+        today_rate: (1/parseFloat(today_rate)).toFixed(4).toString(),
+        yesterday_rate: (1/parseFloat(yesterday_rate)).toFixed(4).toString(),
+        today: ((1/parseFloat(today_rate)) - (1/parseFloat(yesterday_rate))).toFixed(2)
+      }
+    } });
+      
+  } catch (error) {
+    res.json({ is_success: false, data: [] });
+  }
+
+});
+
 app.listen(9000, () => {
   console.log(`Starting Server on Port ${port}`);
 });
