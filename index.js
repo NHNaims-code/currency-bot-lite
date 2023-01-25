@@ -61,15 +61,15 @@ app.get("/currency-rate", async(req, res) => {
 
     data[`${currencyA}-${currencyB}`] = 
       {
-        today_rate,
-        yesterday_rate,
-        change: (parseFloat(today_rate) - parseFloat(yesterday_rate)).toFixed(2).toString()
+        today_rate: parseFloat(today_rate).toFixed(4).toString(),
+        yesterday_rate:parseFloat(yesterday_rate).toFixed(4).toString(),
+        change: (parseFloat(today_rate) - parseFloat(yesterday_rate)).toFixed(4).toString()
       }
     data[`${currencyB}-${currencyA}`] = 
       {
         today_rate: (1/parseFloat(today_rate)).toFixed(4).toString(),
         yesterday_rate: (1/parseFloat(yesterday_rate)).toFixed(4).toString(),
-        change: (-(parseFloat(today_rate) - parseFloat(yesterday_rate))).toFixed(2).toString()
+        change: (-(parseFloat(today_rate) - parseFloat(yesterday_rate))).toFixed(4).toString()
       }
 
     res.json({ is_success: true, data});
