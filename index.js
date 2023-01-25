@@ -59,13 +59,13 @@ app.get("/currency-rate", async(req, res) => {
 
     const data = {}
 
-    data[`${currencyA}-${currencyB}`] = 
+    data[`${currencyA}_${currencyB}`] = 
       {
         today_rate: parseFloat(today_rate).toFixed(4).toString(),
         yesterday_rate:parseFloat(yesterday_rate).toFixed(4).toString(),
         change: (parseFloat(today_rate) - parseFloat(yesterday_rate)).toFixed(4).toString()
       }
-    data[`${currencyB}-${currencyA}`] = 
+    data[`${currencyB}_${currencyA}`] = 
       {
         today_rate: (1/parseFloat(today_rate)).toFixed(4).toString(),
         yesterday_rate: (1/parseFloat(yesterday_rate)).toFixed(4).toString(),
