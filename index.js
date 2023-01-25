@@ -52,23 +52,27 @@ app.get("/currency-rate", async(req, res) => {
     const $ = cheerio.load(response.data)
     const today_rate = $('.fxKbKc').text()
     const yesterday_rate = $('.P6K39c').text()
-    
-    console.log(parseFloat(today_rate))
-    console.log(parseFloat(yesterday_rate))
-    console.log(parseFloat(today_rate) - parseFloat(yesterday_rate))
 
-    res.json({ is_success: true, data: {
-      a: {
+    if(!today_rate || !yesterday_rate) return res.json({ is_success: false, data: [] });
+    
+    const today = (parseFloat(today_rate) - parseFloat(yesterday_rate)).toFixed(2).toString()
+
+    const data = {}
+
+    data[`${currencyA}-${currencyB}`] = 
+      {
         today_rate,
         yesterday_rate,
-        today: (parseFloat(today_rate) - parseFloat(yesterday_rate)).toFixed(2).toString()
-      },
-      b: {
+        change: (parseFloat(today_rate) - parseFloat(yesterday_rate)).toFixed(2).toString()
+      }
+    data[`${currencyB}-${currencyA}`] = 
+      {
         today_rate: (1/parseFloat(today_rate)).toFixed(4).toString(),
         yesterday_rate: (1/parseFloat(yesterday_rate)).toFixed(4).toString(),
-        today: ((1/parseFloat(today_rate)) - (1/parseFloat(yesterday_rate))).toFixed(2)
+        change: (-(parseFloat(today_rate) - parseFloat(yesterday_rate))).toFixed(2).toString()
       }
-    } });
+
+    res.json({ is_success: true, data});
       
   } catch (error) {
     res.json({ is_success: false, data: [] });
